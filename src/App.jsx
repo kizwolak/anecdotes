@@ -1,5 +1,21 @@
 import { useState } from "react";
 
+const DisplayBest = ({ anecdotes, points, handleVote, handleClick }) => {
+  for (let i = 0; i < anecdotes.length; i++) {
+    const oldValue = anecdotes[i];
+    anecdotes[i] = [oldValue];
+    anecdotes[i].push(points[i]);
+  }
+  anecdotes.sort((a, b) => b[1] - a[1]);
+  return (
+    <>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[0][0]}</p>
+      <p>has {anecdotes[0][1]} votes</p>
+    </>
+  );
+};
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -16,7 +32,7 @@ const App = () => {
   const [selected, setSelected] = useState(0);
 
   const handleClick = () => {
-    setSelected(Math.floor(Math.random() * 7) + 1);
+    setSelected(Math.floor(Math.random() * 8));
   };
 
   const handleVote = (props) => {
@@ -27,10 +43,12 @@ const App = () => {
 
   return (
     <>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <button onClick={handleVote}>vote</button>
       <button onClick={handleClick}>next anecdote</button>
+      <DisplayBest anecdotes={anecdotes} points={points} />
     </>
   );
 };
